@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>canvas 加载图片</title>
+</head>
+
+<body>
+    <canvas id="canvas" width="400" height="400"></canvas>
+
+    <script>
+
+        'use strict'
+
+        function draw() {
+
+            var ctx = document.getElementById('canvas').getContext('2d');
+
+            var img = new Image();
+
+            img.onload = function () {
+                for (var y = 0; y < 4; y++) {
+                    for (var x = 0; x < 3; x++) {
+                        ctx.drawImage(img, x * 50, y * 38, 50, 38);
+                    }
+                }
+            }
+
+            img.src = 'https://mdn.mozillademos.org/files/5397/rhino.jpg';
+        }
+
+        draw();
+
+    </script>
+
+</body>
+
+</html>

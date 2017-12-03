@@ -18,15 +18,26 @@
 <body>
     <canvas id="tutorial" width="400" height="400"></canvas>
 
-
 <script>
     
 
 'use strict'
 
-var canvas = document.querySelector('#tutorial');
-var ctx = canvas.getContext('2d');
+var log = console.log.bind(console);
 
+var canvas = document.querySelector('#tutorial');
+var context = canvas.getContext('2d');
+
+var img = new Image();
+img.src = 'baffle.png';
+img.onload = function() {
+context.drawImage(img, 0, 0);
+
+}
+
+log(canvas);
+
+    
 
 
 </script>    
