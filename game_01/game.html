@@ -17,7 +17,7 @@
 
 <body>
     <canvas id="tutorial" width="800" height="400"></canvas>
-`
+
     <script>
 
 
@@ -25,29 +25,58 @@
 
         var log = console.log.bind(console);
 
-        var canvas = document.querySelector('#tutorial');
-        var context = canvas.getContext('2d');
+        function __main() {
+            var canvas = document.querySelector('#tutorial');
+            var context = canvas.getContext('2d');
 
-        var img = new Image(100, 50);
-        img.src = 'baffle.png';
-        img.onload = function () {
-            context.drawImage(img, 150, 200);
+
+            var pageX = 150;
+            var pageY = 280;
+            var space = 5;
+
+            var leftDown = false;
+            var rightDown = false;
+
+
+            var img = new Image();
+            img.src = 'baffle.png';
+            img.onload = function () {
+                context.drawImage(img, pageX, pageY);
+            }
+
+            // 监控 按键
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'a') {
+                    leftDown = true;
+                } else if (event.key === 'd') {
+                    rightDown = true;
+                }
+
+            });
+
+            document.addEventListener('keyup', function (event) {
+                if (event.key === 'a') {
+                    leftDown = false;
+                } else if (event.key === 'd') {
+                    rightDown = false;
+                }
+            });
+
+            setInterval(function () {
+
+                if (leftDown) {
+                    pageX -= space;
+                } else if (rightDown) {
+                    pageX += space;
+                }
+
+                context.clearRect(0, 0, canvas.width, canvas.height);
+                context.drawImage(img, pageX, pageY);
+
+            }, 1000 / 30);
         }
 
-
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'a') {
-
-            }
-            if (event.key === 'd') {
-
-            }
-
-
-            context.drawImage(img, 0, 0);
-        });
-
-
+        __main();
     </script>
 </body>
 
