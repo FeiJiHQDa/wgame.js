@@ -25,27 +25,78 @@
 
         var log = console.log.bind(console);
 
-        function __main() {
+        // 返回 图片路径
+        var imageFromPath = function (path) {
+            var img = new Image();
+            img.src = path;
+            return img;
+        }
+
+        // 挡板
+        var Paddle = function () {
+            var img = imageFromPath('baffle.png');
+            var o = {
+                img: img,
+                pageX: 150,
+                pageY: 280,
+                space: 5,
+            }
+
+            o.leftMove = function () {
+                o.pageX -= o.space;
+            }
+            o.rightMove = function () {
+                o.pageX += o.space;
+            }
+
+            return o;
+        }
+
+        var myGame = function () {
+            var g = {};
             var canvas = document.querySelector('#tutorial');
             var context = canvas.getContext('2d');
 
 
-            var pageX = 150;
-            var pageY = 280;
-            var space = 5;
+
+            g.canvas = canvas;
+            g.context = context;
+
+            g.drawImage = function (myImage) {
+                context.drawImage(myImage.img, myImage.pageX, myImage.pageY);
+            }
+
+
+            setInterval(function () {
+
+                // update
+                g.update();
+
+                // draw
+                g.context.clearRect(0, 0, canvas.width, canvas.height);
+                g.draw();
+            
+
+            }, 1000 / 30);
+
+            return g;
+        }
+
+        function __main() {
+
+
+            var paddle = Paddle();
+
+            var game = myGame();
+
+            game.drawImage(paddle);
 
             var leftDown = false;
             var rightDown = false;
-
-
-            var img = new Image();
-            img.src = 'baffle.png';
-            img.onload = function () {
-                context.drawImage(img, pageX, pageY);
-            }
-
+            
             // 监控 按键
             document.addEventListener('keydown', function (event) {
+
                 if (event.key === 'a') {
                     leftDown = true;
                 } else if (event.key === 'd') {
@@ -62,18 +113,19 @@
                 }
             });
 
-            setInterval(function () {
-
+            // 程序 注入
+            game.update = function() {
                 if (leftDown) {
-                    pageX -= space;
+                    paddle.leftMove();
                 } else if (rightDown) {
-                    pageX += space;
+                    paddle.rightMove();
                 }
+            }
 
-                context.clearRect(0, 0, canvas.width, canvas.height);
-                context.drawImage(img, pageX, pageY);
-
-            }, 1000 / 30);
+            // 程序 注入
+            game.draw = function() {
+                game.drawImage(paddle);
+            }
         }
 
         __main();
