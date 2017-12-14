@@ -44,45 +44,34 @@
 
             o.leftMove = function () {
                 o.pageX -= o.space;
+
+                if (o.pageX < 0) {
+                    o.pageX = 0;
+                }
             }
             o.rightMove = function () {
                 o.pageX += o.space;
+
+                if (o.pageX > 800 - o.img.width) {
+                    o.pageX = 800 - o.img.width;
+                }
             }
 
-            o.collide = function(ball) {
-                // var ball_shape = {
-                //     left : ball.pageX + ball.img.height,
-                //     top : ball.pageY + ball.img.width,
-                //     right : ball.pageX + ball.img.height + ball.img.width,
-                //     bottom : ball.pageY + ball.img.width + ball.img.height,
-                // }
+            o.collide = function (ball) {
 
-                // var item_shape = {
-                //     left : o.pageX + o.img.height,
-                //     top : o.pageY + o.img.width,
-                //     right : o.pageX + o.img.height + o.img.width,
-                //     bottom : o.pageY + o.img.width + o.img.height,
-                // }
-
-
-                if (ball.pageY + ball.img.height  > o.pageY && ) {
-                    if ( ball.pageX > o.pageX && ball.pageX < o.pageX + o.img.width ) {
+                if (ball.pageY + ball.img.height > o.pageY && ball.pageY < o.pageY + o.img.height) {
+                    if (ball.pageX > o.pageX && ball.pageX < o.pageX + o.img.width) {
                         log('相撞');
                         return true;
                     }
+
                 }
 
 
-                // if ( !(item_shape.left > ball_shape.right 
-                // || item_shape.top > ball_shape.bottom 
-                // || ball_shape.left > item_shape.right 
-                // || ball_shape.top > item_shape.bottom)) {
 
-                //     log('箱子');
-                //     return true;
-                // }
                 return false;
             }
+
             return o;
         }
 
@@ -118,6 +107,37 @@
             }
 
             return o;
+        }
+
+        var rectIntersects = function(a, b) {
+
+            if (b.pageY > a.pageY && a.pageY + a.img.height > b.pageY) {
+                if (b.pageX > a.pageX && b.pageX < a.pageX + a.img.width) {
+                    return true;
+                }
+            }
+        }
+
+        // 方块
+        var Block = function () {
+            var img = imageFromPath('block.png');
+            var p = {
+                img: img,
+                pageX: 20,
+                pageY: 100,
+                active: true,
+            }
+
+            p.kill = function () {
+                p.active = false;
+            }
+
+            p.collide = function(b) {
+                return p.active && (rectIntersects(p, b) || rectIntersects(b, p))
+            }
+
+            return p;
+
         }
 
         var myGame = function () {
@@ -184,31 +204,12 @@
             var ball = Ball();
             var game = myGame();
 
-             paddle = Paddle();
-            game.drawImage(paddle);
+            var block = Block();
 
-            // var leftDown = false;
-            // var rightDown = false;
+            var paddle = Paddle();
+            // game.drawImage(paddle);
 
-            // // 监控 按键
-            // document.addEventListener('keydown', function (event) {
-
-            //     if (event.key === 'a') {
-            //         leftDown = true;
-            //     } else if (event.key === 'd') {
-            //         rightDown = true;
-            //     }
-
-            // });
-
-            // document.addEventListener('keyup', function (event) {
-            //     if (event.key === 'a') {
-            //         leftDown = false;
-            //     } else if (event.key === 'd') {
-            //         rightDown = false;
-            //     }
-            // });
-
+            // 注册 按键
             game.registerAction('a', function () {
                 paddle.leftMove();
             })
@@ -233,12 +234,20 @@
                 // } else if (rightDown) {
                 //     paddle.rightMove();
                 // }
+
+                if (block.collide(ball)) {
+                    block.kill();
+                }
             }
 
             // 程序 注入
             game.draw = function () {
                 game.drawImage(paddle);
                 game.drawImage(ball);
+
+                if (block.active) {
+                    game.drawImage(block);
+                }
             }
 
         }
