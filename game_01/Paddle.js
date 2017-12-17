@@ -18,8 +18,8 @@ var Paddle = function () {
     o.rightMove = function () {
         o.pageX += o.space;
 
-        if (o.pageX > 800 - o.img.width) {
-            o.pageX = 800 - o.img.width;
+        if (o.pageX > 400 - o.img.width) {
+            o.pageX = 400 - o.img.width;
         }
     }
 

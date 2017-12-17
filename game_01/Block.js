@@ -6,10 +6,15 @@ var Block = function (position) {
         pageX: position[0],
         pageY: position[1],
         active: true,
+        lifes: position[2] || 1,
     }
 
     p.kill = function () {
-        p.active = false;
+        log('pxx');
+        p.lifes--;
+        if (p.lifes < 1) {
+            p.active = false;
+        }
     }
 
     p.collide = function (b) {

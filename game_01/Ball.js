@@ -17,7 +17,7 @@
     o.move = function () {
 
         if (o.fired) {
-            if (o.pageX < 0 || o.pageX > 800) {
+            if (o.pageX < 0 || o.pageX > 400) {
                 o.spaceX = -o.spaceX;
             }
             if (o.pageY < 0 || o.pageY > 400) {

@@ -10,9 +10,12 @@ var imageFromPath = function (path) {
 // 碰撞算法
 var rectIntersects = function (a, b) {
 
+    // return function(a,b) {}
     if (b.pageY > a.pageY && a.pageY + a.img.height > b.pageY) {
         if (b.pageX > a.pageX && b.pageX < a.pageX + a.img.width) {
             return true;
         }
+        return false;
     }
+    return false;
 }

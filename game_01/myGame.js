@@ -6,8 +6,6 @@ var myGame = function () {
     var canvas = document.querySelector('#tutorial');
     var context = canvas.getContext('2d');
 
-
-
     g.canvas = canvas;
     g.context = context;
 
@@ -27,8 +25,11 @@ var myGame = function () {
         g.actions[key] = callback;
     }
 
-    setInterval(function () {
+    setTimeout(function () {
+        runloop();
+    }, 1000 / 30);
 
+    var runloop = function() {
         // 执行程序 
         var actions = Object.keys(g.actions);
         for (var i = 0; i < actions.length; i++) {
@@ -38,7 +39,6 @@ var myGame = function () {
             }
         }
 
-
         // update
         g.update();
 
@@ -46,8 +46,10 @@ var myGame = function () {
         g.context.clearRect(0, 0, canvas.width, canvas.height);
         g.draw();
 
-
-    }, 1000 / 30);
+        setTimeout(function() {
+            runloop();
+        }, 1000 / 30)
+    }
 
     return g;
 }
