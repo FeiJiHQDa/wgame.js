@@ -18,195 +18,31 @@
 <body>
     <canvas id="tutorial" width="800" height="400"></canvas>
 
+    <hr/>
+    <input type="range" id="id-input-speed" value="1">
+    <script src="./Pause.js"></script>
+    <script src="./Paddle.js"></script>
+    <script src="./Ball.js"></script>
+    <script src="./Block.js"></script>
+    <script src="./myGame.js"></script>
+    <script src="./utils.js"></script>
+    <script src="./debug.js"></script>
+    <script src="./levels.js"></script>
     <script>
-
 
         'use strict'
 
-        var log = console.log.bind(console);
 
-        // 返回 图片路径
-        var imageFromPath = function (path) {
-            var img = new Image();
-            img.src = path;
-            return img;
-        }
-
-        // 挡板
-        var Paddle = function () {
-            var img = imageFromPath('baffle.png');
-            var o = {
-                img: img,
-                pageX: 150,
-                pageY: 280,
-                space: 15,
-            }
-
-            o.leftMove = function () {
-                o.pageX -= o.space;
-
-                if (o.pageX < 0) {
-                    o.pageX = 0;
-                }
-            }
-            o.rightMove = function () {
-                o.pageX += o.space;
-
-                if (o.pageX > 800 - o.img.width) {
-                    o.pageX = 800 - o.img.width;
-                }
-            }
-
-            o.collide = function (ball) {
-
-                if (ball.pageY + ball.img.height > o.pageY && ball.pageY < o.pageY + o.img.height) {
-                    if (ball.pageX > o.pageX && ball.pageX < o.pageX + o.img.width) {
-                        log('相撞');
-                        return true;
-                    }
-
-                }
-
-
-
-                return false;
-            }
-
-            return o;
-        }
-
-        // 球
-        var Ball = function () {
-            var img = imageFromPath('ball.png');
-            var o = {
-                img: img,
-                pageX: 100,
-                pageY: 200,
-                spaceX: 10,
-                spaceY: 10,
-                fired: false,
-            }
-
-            o.fire = function () {
-                o.fired = true;
-            }
-
-            o.move = function () {
-
-                if (o.fired) {
-                    if (o.pageX < 0 || o.pageX > 800) {
-                        o.spaceX = -o.spaceX;
-                    }
-                    if (o.pageY < 0 || o.pageY > 400) {
-                        o.spaceY = -o.spaceY;
-                    }
-
-                    o.pageX += o.spaceX;
-                    o.pageY += o.spaceY;
-                }
-            }
-
-            return o;
-        }
-
-        var rectIntersects = function(a, b) {
-
-            if (b.pageY > a.pageY && a.pageY + a.img.height > b.pageY) {
-                if (b.pageX > a.pageX && b.pageX < a.pageX + a.img.width) {
-                    return true;
-                }
-            }
-        }
-
-        // 方块
-        var Block = function () {
-            var img = imageFromPath('block.png');
-            var p = {
-                img: img,
-                pageX: 20,
-                pageY: 100,
-                active: true,
-            }
-
-            p.kill = function () {
-                p.active = false;
-            }
-
-            p.collide = function(b) {
-                return p.active && (rectIntersects(p, b) || rectIntersects(b, p))
-            }
-
-            return p;
-
-        }
-
-        var myGame = function () {
-            var g = {
-                actions: {},
-                keydowns: {},
-            };
-            var canvas = document.querySelector('#tutorial');
-            var context = canvas.getContext('2d');
-
-
-
-            g.canvas = canvas;
-            g.context = context;
-
-            g.drawImage = function (myImage) {
-                context.drawImage(myImage.img, myImage.pageX, myImage.pageY);
-            }
-
-            // 使用事件
-            document.addEventListener('keydown', function (event) {
-                g.keydowns[event.key] = true;
-            });
-            document.addEventListener('keyup', function (event) {
-                g.keydowns[event.key] = false;
-            });
-
-
-
-
-            g.registerAction = function (key, callback) {
-                g.actions[key] = callback;
-            }
-
-            setInterval(function () {
-
-                // 执行程序 
-                var actions = Object.keys(g.actions);
-                for (var i = 0; i < actions.length; i++) {
-                    var key = actions[i];
-                    if (g.keydowns[key]) {
-                        g.actions[key]();
-                    }
-                }
-
-
-                // update
-                g.update();
-
-                // draw
-                g.context.clearRect(0, 0, canvas.width, canvas.height);
-                g.draw();
-
-
-            }, 1000 / 30);
-
-            return g;
-        }
-
+       
         function __main() {
-
-
 
             var ball = Ball();
             var game = myGame();
 
-            var block = Block();
+            var blocks = loadLevels(0);
 
             var paddle = Paddle();
+            var pause = Pause();
             // game.drawImage(paddle);
 
             // 注册 按键
@@ -221,22 +57,34 @@
                 ball.fire();
             })
 
+            //暂停
+            game.registerAction('q', function() {
+                pause.transform();
+            })
+
+            // 开始
+            game.registerAction('s', function() {
+                pause.start();
+            })
+
             // // 程序 注入
             game.update = function () {
+
+                if (pause.use()) {
+                    return;
+                }
 
                 ball.move();
 
                 if (paddle.collide(ball)) {
-                    ball.spaceY *= -1;
+                    ball.rebound();
                 }
-                // if (leftDown) {
-                //     paddle.leftMove();
-                // } else if (rightDown) {
-                //     paddle.rightMove();
-                // }
 
-                if (block.collide(ball)) {
-                    block.kill();
+                for (var i = 0; i < blocks.length; i++) {
+                    var block = blocks[i];
+                    if (block.collide(ball)) {
+                        block.kill();
+                    }
                 }
             }
 
@@ -245,8 +93,11 @@
                 game.drawImage(paddle);
                 game.drawImage(ball);
 
-                if (block.active) {
-                    game.drawImage(block);
+                for (var i = 0; i < blocks.length; i++) {
+                    var block = blocks[i];
+                    if (block.active) {
+                        game.drawImage(block);
+                    }
                 }
             }
 
