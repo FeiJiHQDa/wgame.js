@@ -1,9 +1,9 @@
 
-var loadLevels = function (n) {
+var loadLevels = function (game, n) {
     var blocks = [];
     var level = levels[n];
     for (var i = 0; i < level.length; i++) {
-        var b = Block(level[i]);
+        var b = Block(game, level[i]);
         blocks.push(b);
     }
     return blocks;

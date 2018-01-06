@@ -1,13 +1,25 @@
 // 方块
-var Block = function (position) {
-    var img = imageFromPath('block.png');
-    var p = {
-        img: img,
+var Block = function (game, position) {
+    
+    // var img = imageFromPath('block.png');
+    // var p = {
+    //     img: img,
+    //     pageX: position[0],
+    //     pageY: position[1],
+    //     active: true,
+    //     lifes: position[2] || 1,
+    // }
+
+    var block = game.imageByName('block');
+
+    var other = {
         pageX: position[0],
         pageY: position[1],
         active: true,
         lifes: position[2] || 1,
     }
+
+    var p =  Object.assign(block, other);
 
     p.kill = function () {
         log('pxx');
