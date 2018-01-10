@@ -22,7 +22,6 @@ var Block = function (game, position) {
     var p =  Object.assign(block, other);
 
     p.kill = function () {
-        log('pxx');
         p.lifes--;
         if (p.lifes < 1) {
             p.active = false;

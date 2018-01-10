@@ -13,7 +13,7 @@ var rectIntersects = function (a, b) {
     // return function(a,b) {}
     if (b.pageY > a.pageY && a.pageY + a.img.height > b.pageY) {
         if (b.pageX > a.pageX && b.pageX < a.pageX + a.img.width) {
-            log('rpz');
+            log('碰撞算法');
             return true;
         }
     }

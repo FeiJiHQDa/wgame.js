@@ -41,10 +41,10 @@ var Scene = function (game) {
 
         ball.move();
 
-        if(paddle.pageY < ball.pageY) {
-            var end = SceneEnd(game);
-            game.replaceScene(SceneEnd);
-        }
+        // if( Number(paddle.pageY) < Number(ball.pageY)) {
+        //     var end = SceneEnd(game);
+        //     game.replaceScene(SceneEnd);
+        // }
 
         if (paddle.collide(ball)) {
             ball.rebound();

@@ -1,3 +1,8 @@
+// class SceneStart {
+
+// }
+
+
 var SceneStart = function(game) {
 
     game.registerAction('k', function () {

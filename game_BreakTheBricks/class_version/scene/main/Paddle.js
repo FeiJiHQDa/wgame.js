@@ -16,7 +16,7 @@ var Paddle = function (game) {
         space: 15,
     }
 
-    var o =  Object.assign(paddle, other);
+    var o = Object.assign(paddle, other);
 
     o.leftMove = function () {
         o.pageX -= o.space;
@@ -41,8 +41,9 @@ var Paddle = function (game) {
 
         var b = ball;
         var a = o;
-        if (aInb(b.pageY, a.pageY ,a.pageY + a.h) || aInb(a.pageY, b.pageX, b.pageX + b.h)) {
-            if (aInb(b.pageX, a.pageX, a.pageX + a.w) || aInb(a.pageX, b.pageX, b.pageX + b.w)) {
+        if (aInb(b.pageX, a.pageX, a.pageX + a.w) || aInb(a.pageX, b.pageX, b.pageX + b.w)) {
+            if (aInb(b.pageY, a.pageY, a.pageY + a.h) || aInb(a.pageY, b.pageX, b.pageX + b.h)) {
+                log('碰撞');
                 return true
             }
         }
