@@ -41,7 +41,7 @@ var Paddle = function (game) {
 
         var b = ball;
         var a = o;
-        if (aInb(b.pageY, a.pageY ,a.pageY + a.h) || aInb(a.pageY, b.pageX, b.pageX + b.h)) {
+        if (aInb(b.pageY, a.pageY ,a.pageY + a.h) || aInb(a.pageY, b.pageY, b.pageY + b.h)) {
             if (aInb(b.pageX, a.pageX, a.pageX + a.w) || aInb(a.pageX, b.pageX, b.pageX + b.w)) {
                 return true
             }

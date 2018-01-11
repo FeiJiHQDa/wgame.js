@@ -68,6 +68,14 @@ var myGame = function (images, runCallback) {
     //     runloop();
     // }, 1000 / 30);
 
+    g.update = function() {
+        g.scene.update();
+    }
+    
+    g.draw = function() {
+        g.scene.draw();
+    }
+
     var runloop = function () {
         // 执行程序 
         var actions = Object.keys(g.actions);

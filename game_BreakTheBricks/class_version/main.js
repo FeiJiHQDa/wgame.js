@@ -23,7 +23,9 @@ function __main() {
 
         // Scene(game);
         // var g = Scene(game);
-        var g = SceneStart(game);
+        // var g = SceneStart(game);
+        var g = new SceneStart(game);
+        log(g);
         game.runWithScene(g);
     });
 

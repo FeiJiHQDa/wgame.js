@@ -41,9 +41,14 @@ var Paddle = function (game) {
 
         var b = ball;
         var a = o;
-        if (aInb(b.pageX, a.pageX, a.pageX + a.w) || aInb(a.pageX, b.pageX, b.pageX + b.w)) {
-            if (aInb(b.pageY, a.pageY, a.pageY + a.h) || aInb(a.pageY, b.pageX, b.pageX + b.h)) {
-                log('碰撞');
+
+        var bw = aInb(b.pageX, a.pageX, a.pageX + a.w);
+        var aw = aInb(a.pageX, b.pageX, b.pageX + b.w);
+        var bh = aInb(b.pageY, a.pageY, a.pageY + a.h);
+        var ah = aInb(a.pageY, b.pageY, b.pageY + b.h);
+
+        if (bw || aw) {
+            if ( bh || ah) {
                 return true
             }
         }
