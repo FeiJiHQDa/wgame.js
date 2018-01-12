@@ -19,14 +19,14 @@ function __main() {
         block: 'img/block.png',
     };
 
-    var game = myGame(images, function (g) {
+    // var game = myGame(images, function (g) {
+    var game = new myGame(images, function (g) {
 
-        // Scene(game);
-        // var g = Scene(game);
-        // var g = SceneStart(game);
-        var g = new SceneStart(game);
-        log(g);
-        game.runWithScene(g);
+        log(game);
+
+        var s = new SceneStart(g);
+        log(s);
+        g.runWithScene(s);
     });
 
 

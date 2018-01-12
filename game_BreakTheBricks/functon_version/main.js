@@ -21,11 +21,11 @@ function __main() {
     };
 
     var game = myGame(images, function (g) {
+        log(g);
+        log(game);
 
-        // Scene(game);
-        // var g = Scene(game);
-        var g = SceneStart(game);
-        game.runWithScene(g);
+        var g = SceneStart(g);
+        g.runWithScene(g);
     });
 
 

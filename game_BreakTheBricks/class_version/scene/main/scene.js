@@ -22,7 +22,6 @@ class Scene extends myScene {
         })
 
         game.registerAction('f', function () {
-           log(this);
             than.ball.fire();
         })
 
@@ -75,10 +74,10 @@ class Scene extends myScene {
 
         this.ball.move();
 
-        // if( Number(paddle.pageY) < Number(ball.pageY)) {
-        //     var end = SceneEnd(game);
-        //     game.replaceScene(SceneEnd);
-        // }
+        if( Number(this.paddle.pageY) < Number(this.ball.pageY)) {
+            var end = new SceneEnd(this.game);
+            this.game.replaceScene(end);
+        }
 
         if (this.paddle.collide(this.ball)) {
             this.ball.rebound();

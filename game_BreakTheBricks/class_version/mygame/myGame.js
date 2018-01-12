@@ -1,58 +1,64 @@
-var myGame = function (images, runCallback) {
-    // images 是一个对象, 里面是图片的引用名字和图片路径
-    // 程序会在所有图片载入成功后才运行
-    var g = {
-        scene : null,
-        actions: {},
-        keydowns: {},
-        images: {},
-    };
+class myGame {
+    constructor(images, runCallback) {
 
-    var canvas = document.querySelector('#tutorial');
-    var context = canvas.getContext('2d');
+        this.images = images;
 
-    g.canvas = canvas;
-    g.context = context;
+        this.runCallback = runCallback;
 
-    g.drawImage = function (myImage) {
-        context.drawImage(myImage.img, myImage.pageX, myImage.pageY);
+        this.scene = null;
+        this.actions = {};
+        this.keydowns = {};
+        // this.images = {};
+        var than = this;
+        // var canvas = document.querySelector('#tutorial');
+        // var context = canvas.getContext('2d');
+        this.canvas = document.querySelector('#tutorial');
+        this.context = this.canvas.getContext('2d');
+
+        // 使用事件
+        document.addEventListener('keydown', function (event) {
+            than.keydowns[event.key] = true;
+        });
+        document.addEventListener('keyup', function (event) {
+            than.keydowns[event.key] = false;
+        });
+
+        this.init();
     }
 
-    // 使用事件
-    document.addEventListener('keydown', function (event) {
-        g.keydowns[event.key] = true;
-    });
-    document.addEventListener('keyup', function (event) {
-        g.keydowns[event.key] = false;
-    });
-
-    g.registerAction = function (key, callback) {
-        g.actions[key] = callback;
+    drawImage(myImage) {
+        this.context.drawImage(myImage.img, myImage.pageX, myImage.pageY);
     }
 
+    registerAction(key, callback) {
+        this.actions[key] = callback;
+    }
 
-    var loads = [];
-    var names = Object.keys(images);
-    for (var i = 0; i < names.length; i++) {
-        let name = names[i];
-        var path = images[name];
-        let img = new Image();
-        img.src = path;
-        img.onload = function () {
+    init() {
+        var than = this;
+        var loads = [];
+        var names = Object.keys(than.images);
+        for (var i = 0; i < names.length; i++) {
+            let name = names[i];
+            var path = than.images[name];
+            let img = new Image();
+            img.src = path;
 
-            g.images[name] = img
-            loads.push(1);
-            if (loads.length == names.length) {
-                log('load images', g.images);
-                // g.__start();
-                g.run();
+            
+            img.onload = function () {
+                than.images[name] = img;
+                loads.push(1);
+                if (loads.length == names.length) {
+                    log('load images', than.images);
+                    // than.__start();
+                    than.start();
+                }
             }
         }
     }
 
-    g.imageByName = function (name) {
-        var img = g.images[name];
-        log(img);
+    imageByName(name) {
+        var img = this.images[name];
         var image = {
             w: img.width,
             h: img.height,
@@ -61,54 +67,52 @@ var myGame = function (images, runCallback) {
         return image;
     }
 
-    g.run = function () {
-        runCallback(g);        
-    }
-    // setTimeout(function () {
-    //     runloop();
-    // }, 1000 / 30);
-
-    g.update = function() {
-        g.scene.update();
-    }
-    
-    g.draw = function() {
-        g.scene.draw();
+    start() {
+        this.runCallback(this);
     }
 
-    var runloop = function () {
-        // 执行程序 
-        var actions = Object.keys(g.actions);
+    update() {
+        this.scene.update();
+    }
+
+    draw() {
+        this.scene.draw();
+    }
+
+
+    runloop() {
+        // 执行程序
+        var than = this;
+        var actions = Object.keys(than.actions);
         for (var i = 0; i < actions.length; i++) {
             var key = actions[i];
-            if (g.keydowns[key]) {
-                g.actions[key]();
+            if (than.keydowns[key]) {
+                than.actions[key]();
             }
         }
 
         // update
-        g.update();
+        than.update();
 
         // draw
-        g.context.clearRect(0, 0, canvas.width, canvas.height);
-        g.draw();
+        than.context.clearRect(0, 0, than.canvas.width, than.canvas.height);
+        than.draw();
 
         setTimeout(function () {
-            runloop();
+            than.runloop();
         }, 1000 / 30)
     }
 
-    g.runWithScene = function(scene) {
-        g.scene = scene;
+
+    runWithScene (scene) {
+        var than = this;
+        this.scene = scene;
         setTimeout(function () {
-            runloop();
+            than.runloop();
         }, 1000 / 30);
     }
 
-    g.replaceScene = function(scene) {
-        g.scene = scene;        
+    replaceScene(scene) {
+        this.scene = scene;
     }
-
-
-    return g;
 }
