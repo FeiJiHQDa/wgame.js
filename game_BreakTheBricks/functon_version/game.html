@@ -28,7 +28,12 @@
 
 
     <hr/>
-    <input type="range" id="id-input-speed" value="1">
+    <input type="range" id="id-input-speed"  title="speed" value="1" />
+    <hr/>
+
+    <input type="range" id="test-button" title=test-button  value="2" />
+
+
     <script src="./utils.js"></script>
     <script src="./Pause.js"></script>
     <script src="./Paddle.js"></script>
@@ -43,6 +48,13 @@
     <script src="./scene_start.js"></script>
     <script>
 
+        var el = function (self) {
+            return document.querySelector(self);
+        }
+
+        el('#test-button').addEventListener('click', function (event) {
+            console.log(event);
+        })
 
     </script>
 </body>
