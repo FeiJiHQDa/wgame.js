@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <style>
+        canvas {
+            border: 1px black solid;
+        }
+    </style>
+
+    <title>Document</title>
+</head>
+
+<body>
+    <ol>
+        <li> 添加的功能</li>
+        <li> 球碰到砖块反弹</li>
+        <li> 鼠标拖动事件</li>
+        <li> 碰撞算法改进</li>
+        <li> 场景的切换</li>
+        <li> 面向对象编程</li>
+    </ol>
+    <canvas id="tutorial" width="320" height="568"></canvas>
+
+
+    <hr/>
+    <input type="range" id="id-input-speed" value="1">
+    
+    <!-- 主程序 -->
+    <script src="./mygame/utils.js"></script>
+    <script src="./mygame/myGame.js"></script>
+    <script src="./mygame/myScene.js"></script>
+    <script src="./debug.js"></script>
+    <script src="./levels.js"></script>
+
+    <!-- 场景 -->
+    <script src="./scene/main/Pause.js"></script>
+    <script src="./scene/main/Paddle.js"></script>
+    <script src="./scene/main/Ball.js"></script>
+    <script src="./scene/main/Block.js"></script>
+    <script src="./scene/main/scene.js"></script>
+
+    <!-- 结束 和 开始场景 -->
+    <script src="./scene/end/scene_end.js"></script>
+    <script src="./scene/start/scene_start.js"></script>
+    <script src="./scene/start/start.js"></script>
+
+
+
+    <script src="./main.js"></script>
+    <script>
+
+
+    </script>
+</body>
+
+</html>
