@@ -30,8 +30,7 @@ function __main() {
     // var game = myGame(images, function (g) {
     var game = new myGame(images, function (g) {
 
-        var s = new SceneStart(g);
-        log(s);
+        var s = new Scene(g);
         g.runWithScene(s);
     });
 

@@ -4,7 +4,13 @@ class SceneStart extends myScene {
 
         this.palne = PlaneStart.new(game, 'ks');
 
-        this.game.registerAction('k', function() {
+        this.options()
+    }
+
+    options() {
+
+        var game = this.game;
+        game.registerAction('k', function() {
             var scene = new Scene(game);
             game.replaceScene(scene);
         })
